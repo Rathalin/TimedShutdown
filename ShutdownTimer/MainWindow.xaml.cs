@@ -28,6 +28,9 @@ namespace ShutdownTimer
             InitializeComponent();
             DataContext = this;
             Reset();
+
+            // Default mode is Minutes
+            Radio_Minutes.IsChecked = true;
         }
 
         private DateTime _time;
@@ -68,7 +71,6 @@ namespace ShutdownTimer
 
         public void Command(string cmd)
         {
-            /*
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
@@ -76,8 +78,6 @@ namespace ShutdownTimer
             startInfo.Arguments = "/C " + cmd;
             process.StartInfo = startInfo;
             process.Start();
-            */
-            //MessageBox.Show(cmd);
         }
 
         private void Countdown_Worker()
@@ -158,7 +158,16 @@ namespace ShutdownTimer
 
         private void MetroWindow_Closing(object sender, CancelEventArgs e)
         {
-            StopShutdown();
+            var result = MessageBox.Show("Do you really want to exit?\nShutdown will be cancled!",
+                "Exit", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
+            if (result == MessageBoxResult.OK)
+            {
+                StopShutdown();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
         private void Button_Debug_Click(object sender, RoutedEventArgs e)
