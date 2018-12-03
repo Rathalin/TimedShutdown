@@ -96,6 +96,7 @@ namespace ShutdownTimer
                     timeToShutdown = true;
                 }
             }
+            Countdown = new TimeSpan(0, 0, 0);
             Dispatcher.Invoke(delegate () { Application.Current.Shutdown(); });
         }
 
@@ -158,21 +159,21 @@ namespace ShutdownTimer
 
         private void MetroWindow_Closing(object sender, CancelEventArgs e)
         {
-            var result = MessageBox.Show("Do you really want to exit?\nShutdown will be cancled!",
-                "Exit", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
-            if (result == MessageBoxResult.OK)
+            // Check if Countdown is running
+            if (Countdown.CompareTo(new TimeSpan(0, 0, 0)) != 0)
             {
-                StopShutdown();
+                var result = MessageBox.Show("Do you really want to exit?\nShutdown will be cancled!",
+                    "Exit", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
+                if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
-            else
-            {
-                e.Cancel = true;
-            }
+            StopShutdown();
         }
 
         private void Button_Debug_Click(object sender, RoutedEventArgs e)
         {
-
             StopShutdown();
             Button btn = (Button)sender;
             shutdownTimer = 5;

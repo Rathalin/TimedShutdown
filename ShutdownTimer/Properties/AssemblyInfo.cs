@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ShutdownTimer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Timed Shutdown")]
+[assembly: AssemblyDescription("Countdown to shut down pc")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ShutdownTimer")]
+[assembly: AssemblyCompany("Daniel Flockert")]
+[assembly: AssemblyProduct("Timed Shutdown")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
