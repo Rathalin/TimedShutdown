@@ -15,6 +15,10 @@ using System.Windows.Shapes;
 using MahApps.Metro;
 using System.ComponentModel;
 using System.Threading;
+using System.Collections;
+using System.Resources;
+using System.Reflection;
+using System.IO;
 
 namespace ShutdownTimer
 {
@@ -26,7 +30,7 @@ namespace ShutdownTimer
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = this;           
             Reset();
 
             // Default mode is Minutes
@@ -66,7 +70,9 @@ namespace ShutdownTimer
             Countdown = new TimeSpan(0, 0, 0);
 
             TBl_Time.Foreground = Brushes.Gray;
+            TBl_TimeDesc.Foreground = Brushes.Gray;
             TBl_Countdown.Foreground = Brushes.Gray;
+            TBl_CountdownDesc.Foreground = Brushes.Gray;
         }
 
         public void Command(string cmd)
@@ -129,7 +135,7 @@ namespace ShutdownTimer
             // check if custom flag -1 in tag is set
             if (tag == -1)
             {
-                if (int.TryParse(TB_CustomTime.Text, out tag))
+                if (int.TryParse(TB_CustomTime.Text, out tag) && tag > 0)
                 {
                     TB_CustomTime.BorderBrush = Brushes.Gray;
                 }
@@ -148,7 +154,9 @@ namespace ShutdownTimer
             Command("shutdown /s /t " + shutdownTimer);
 
             TBl_Time.Foreground = Brushes.Black;
+            TBl_TimeDesc.Foreground = Brushes.Black;
             TBl_Countdown.Foreground = Brushes.Black;
+            TBl_CountdownDesc.Foreground = Brushes.Black;
         }
 
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)
@@ -163,13 +171,16 @@ namespace ShutdownTimer
             if (Countdown.CompareTo(new TimeSpan(0, 0, 0)) != 0)
             {
                 var result = MessageBox.Show("Do you really want to exit?\nShutdown will be cancled!",
-                    "Exit", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
+                    "Exit Shutdown Timer", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
                 if (result == MessageBoxResult.Cancel)
                 {
                     e.Cancel = true;
                 }
-            }
-            StopShutdown();
+                else
+                {
+                    StopShutdown();
+                }
+            }            
         }
 
         private void Button_Debug_Click(object sender, RoutedEventArgs e)
@@ -185,7 +196,17 @@ namespace ShutdownTimer
             Thread_Countdown.Start();
 
             TBl_Time.Foreground = Brushes.Black;
+            TBl_TimeDesc.Foreground = Brushes.Black;
             TBl_Countdown.Foreground = Brushes.Black;
+            TBl_CountdownDesc.Foreground = Brushes.Black;
+        }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Button_SetTime_Click(Btn1, new RoutedEventArgs());
+            }
         }
     }
 }
