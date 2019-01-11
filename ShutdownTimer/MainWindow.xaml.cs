@@ -83,7 +83,7 @@ namespace ShutdownTimer
             startInfo.FileName = "cmd.exe";
             startInfo.Arguments = "/C " + cmd;
             process.StartInfo = startInfo;
-            //process.Start();
+            process.Start();
         }
 
         private void Countdown_Worker()
