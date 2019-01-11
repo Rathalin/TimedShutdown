@@ -170,9 +170,13 @@ namespace ShutdownTimer
             // Check if Countdown is running
             if (Countdown.CompareTo(new TimeSpan(0, 0, 0)) != 0)
             {
-                var result = MessageBox.Show("Do you really want to exit?\nShutdown will be cancled!",
-                    "Exit Shutdown Timer", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
-                if (result == MessageBoxResult.Cancel)
+                //var result = MessageBox.Show("Do you really want to exit?\nShutdown will be cancled!",
+                //    "Exit Shutdown Timer", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Yes);
+
+                var result = new ClosingDialog() { Owner = this }.ShowDialog();
+
+
+                if (result == false)
                 {
                     e.Cancel = true;
                 }
