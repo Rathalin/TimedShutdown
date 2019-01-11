@@ -19,9 +19,17 @@ namespace ShutdownTimer
     /// </summary>
     public partial class ClosingDialog
     {
-        public ClosingDialog()
+        public ClosingDialog() : this("Do you really want to exit? The shutdown will be canceled.", "No","Yes") { }
+
+        public ClosingDialog(string text) : this(text, "No", "Yes") { }
+
+        public ClosingDialog(string text, string canceltext, string confirmtext)
         {
+            DataContext = this;
             InitializeComponent();
+            TBl_Text.Text = text;
+            Btn_No.Content = canceltext;
+            Btn_Yes.Content = confirmtext;
         }
 
         private void ButtonYes_Click(object sender, RoutedEventArgs e)
