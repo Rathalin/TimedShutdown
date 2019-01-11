@@ -7,10 +7,8 @@
         xmlns:local="clr-namespace:ShutdownTimer"
         mc:Ignorable="d"
         Height="116" Width="326" WindowStartupLocation="CenterOwner" WindowStyle="None"
-        BorderBrush="Black"
-        BorderThickness="5"
         AllowsTransparency="True">
-    <Border BorderBrush="Black" BorderThickness="3" CornerRadius="5">
+    <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
