@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro;
+using MahApps.Metro.Controls.Dialogs;
 using System.ComponentModel;
 using System.Threading;
 using System.Collections;
@@ -27,6 +28,8 @@ namespace ShutdownTimer
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
+        private bool closeMe;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -149,6 +152,7 @@ namespace ShutdownTimer
             shutdownTimer = tag * multiplier;
             Time = DateTime.Now.AddSeconds(shutdownTimer);
             Thread_Countdown = new Thread(new ThreadStart(Countdown_Worker));
+            Thread_Countdown.IsBackground = true;
             Thread_Countdown.Start();
 
             Command("shutdown /s /t " + shutdownTimer);
@@ -165,23 +169,37 @@ namespace ShutdownTimer
             Reset();
         }
 
-        private void MetroWindow_Closing(object sender, CancelEventArgs e)
+        private async void  MetroWindow_Closing(object sender, CancelEventArgs e)
         {
+            Grid_Overlay.Visibility = Visibility.Visible;
+
+            if (e.Cancel) return;
+
+            //for callback reentrance;
+            e.Cancel = !this.closeMe;
+            if (this.closeMe) return;
+
             // Check if Countdown is running
             if (Countdown.CompareTo(new TimeSpan(0, 0, 0)) != 0)
             {
-                Grid_Overlay.Visibility = Visibility.Visible;
-                var result = new ClosingDialog() { Owner = this }.ShowDialog();
-                if (result == false)
+                var mySettings = new MetroDialogSettings()
                 {
-                    e.Cancel = true;
-                }
-                else
-                {
-                    StopShutdown();
-                }
-                Grid_Overlay.Visibility = Visibility.Collapsed;
-            }            
+                    AffirmativeButtonText = "Quit",
+                    NegativeButtonText = "Cancel",
+                    AnimateShow = true,
+                    AnimateHide = false
+                };
+
+                var result = await this.ShowMessageAsync("Close Application?", "Do you really want to exit? The shutdown will be canceled.", MessageDialogStyle.AffirmativeAndNegative, mySettings);
+                
+                this.closeMe = result == MessageDialogResult.Affirmative;
+
+                if (!this.closeMe)
+                    Grid_Overlay.Visibility = Visibility.Collapsed;
+            }
+
+            if (this.closeMe)
+                this.Close();
         }
 
         private void Button_Debug_Click(object sender, RoutedEventArgs e)
@@ -194,6 +212,7 @@ namespace ShutdownTimer
             Time = DateTime.Now.AddSeconds(shutdownTimer);
 
             Thread_Countdown = new Thread(new ThreadStart(Countdown_Worker));
+            Thread_Countdown.IsBackground = true;
             Thread_Countdown.Start();
 
             TBl_Time.Foreground = Brushes.Black;
