@@ -177,7 +177,11 @@ namespace ShutdownTimer
 
             //for callback reentrance;
             e.Cancel = !this.closeMe;
-            if (this.closeMe) return;
+            if (this.closeMe)
+            {
+                StopShutdown();
+                return;
+            }
 
             // Check if Countdown is running
             if (Countdown.CompareTo(new TimeSpan(0, 0, 0)) != 0)
