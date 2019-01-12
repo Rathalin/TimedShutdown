@@ -16,15 +16,10 @@
             <Setter Property="FontFamily" Value="Segoe UI"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="Transparent"></Setter>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <ControlTemplate x:Key="Template_Button" TargetType="{x:Type Button}">
-            <Border Name="border" BorderThickness="0" BorderBrush="Gray"  Background="{TemplateBinding Background}">
+            <Border Name="border" BorderThickness="0" BorderBrush="Gray" Background="{TemplateBinding Background}">
                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
         </ControlTemplate>
@@ -40,84 +35,103 @@
             <Setter Property="Opacity" Value="1"></Setter>
             <Setter Property="Template" Value="{StaticResource Template_Button}"></Setter>
             <Setter Property="Margin" Value="5 5 5 5"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7FFFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
     </Window.Resources>
-
-    <DockPanel>
-        <DockPanel.Background>
-            <LinearGradientBrush Opacity="0.1" StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="Yellow" Offset="0.0" />
-                <GradientStop Color="Red" Offset="0.25" />
-                <GradientStop Color="Blue" Offset="0.75" />
-                <GradientStop Color="LimeGreen" Offset="1.0" />
-            </LinearGradientBrush>
-        </DockPanel.Background>
-        <Grid DockPanel.Dock="Bottom" Height="300">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5" Background="White" Opacity="0.95">
-                <Button x:Name="Btn1" ToolTip="Set Custom Shutdown Timer" DockPanel.Dock="Bottom" Margin="0" Content="Set" MinHeight="50"
-                        FontSize="30" Tag="-1" Click="Button_SetTime_Click" Template="{StaticResource Template_Button}"></Button>
-                <Viewbox DockPanel.Dock="Top" Height="30" HorizontalAlignment="Left" Margin="5">
-                    <RadioButton x:Name="Radio_Hours" GroupName="TimeQuantity" FontFamily="Segoe UI Light" Content="Hours" DockPanel.Dock="Top"></RadioButton>
-                </Viewbox>
-                <Viewbox DockPanel.Dock="Top" Height="30" HorizontalAlignment="Left" Margin="5">
-                    <RadioButton x:Name="Radio_Minutes" GroupName="TimeQuantity" FontFamily="Segoe UI Light" Content="Minutes" DockPanel.Dock="Top"></RadioButton>
-                </Viewbox>
-                <Viewbox DockPanel.Dock="Top" Height="30" HorizontalAlignment="Left" Margin="5">
-                    <RadioButton x:Name="Radio_Seconds" GroupName="TimeQuantity" FontFamily="Segoe UI Light" Content="Seconds" DockPanel.Dock="Top"></RadioButton>
-                </Viewbox>
-                <TextBox x:Name="TB_CustomTime" Text="1" Padding="12" ToolTip="Must be positive integer" FontSize="60"
+    <Grid>
+        <Grid x:Name="Grid_Overlay" Panel.ZIndex="1000" Visibility="Collapsed">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity=".7"/>
+            </Grid.Background>
+        </Grid>
+        <DockPanel>
+            <DockPanel.Background>
+                
+                <LinearGradientBrush Opacity="0.1" StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="Yellow" Offset="0.0" />
+                    <GradientStop Color="Red" Offset="0.25" />
+                    <GradientStop Color="Blue" Offset="0.75" />
+                    <GradientStop Color="LimeGreen" Offset="1.0" />
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            <Grid DockPanel.Dock="Bottom" Height="300">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="5" >
+                    <Button x:Name="Btn1" ToolTip="Set Custom Shutdown Timer" DockPanel.Dock="Bottom" Margin="0" Content="Set" MinHeight="50"
+                        FontSize="30" Tag="-1" Click="Button_SetTime_Click">
+                    </Button>
+                    <DockPanel Background="White" >
+                        <Viewbox DockPanel.Dock="Top" Height="30" HorizontalAlignment="Left" Margin="5">
+                            <RadioButton x:Name="Radio_Hours" GroupName="TimeQuantity" FontFamily="Segoe UI Light" Content="Hours" DockPanel.Dock="Top"></RadioButton>
+                        </Viewbox>
+                        <Viewbox DockPanel.Dock="Top" Height="30" HorizontalAlignment="Left" Margin="5">
+                            <RadioButton x:Name="Radio_Minutes" GroupName="TimeQuantity" FontFamily="Segoe UI Light" Content="Minutes" DockPanel.Dock="Top"></RadioButton>
+                        </Viewbox>
+                        <Viewbox DockPanel.Dock="Top" Height="30" HorizontalAlignment="Left" Margin="5">
+                            <RadioButton x:Name="Radio_Seconds" GroupName="TimeQuantity" FontFamily="Segoe UI Light" Content="Seconds" DockPanel.Dock="Top"></RadioButton>
+                        </Viewbox>
+                        <TextBox x:Name="TB_CustomTime" Text="1" Padding="12" ToolTip="Must be positive integer" FontSize="60"
                          FontFamily="Segoe UI Light" TextAlignment="Center" Background="Transparent" Margin="5"
                          KeyDown="OnKeyDownHandler">
-                </TextBox>
-            </DockPanel>
-            <Button Grid.Column="1" Grid.Row="0" Content="10" Tag="10" Click="Button_SetTime_Click"></Button>
-            <Button Grid.Column="2" Grid.Row="0" Content="15" Tag="15" Click="Button_SetTime_Click"></Button>
-            <Button Grid.Column="3" Grid.Row="0" Content="20" Tag="20" Click="Button_SetTime_Click"></Button>
-            <Button Grid.Column="4" Grid.Row="0" Content="30" Tag="30" Click="Button_SetTime_Click"></Button>
-            <Button Grid.Column="1" Grid.Row="1" Content="40" Tag="40" Click="Button_SetTime_Click"></Button>
-            <Button Grid.Column="2" Grid.Row="1" Content="50" Tag="50" Click="Button_SetTime_Click"></Button>
-            <Button Grid.Column="3" Grid.Row="1" Content="60" Tag="60" Click="Button_SetTime_Click"></Button>
-            <Button x:Name="Btn_Stop" Grid.Column="4" Grid.Row="1" ToolTip="Cancel Shutdown"
+                        </TextBox>
+                    </DockPanel>
+                </DockPanel>
+                
+                <Button Grid.Column="1" Grid.Row="0" Content="10" Tag="10" Click="Button_SetTime_Click"></Button>
+                <Button Grid.Column="2" Grid.Row="0" Content="15" Tag="15" Click="Button_SetTime_Click"></Button>
+                <Button Grid.Column="3" Grid.Row="0" Content="20" Tag="20" Click="Button_SetTime_Click"></Button>
+                <Button Grid.Column="4" Grid.Row="0" Content="30" Tag="30" Click="Button_SetTime_Click" ></Button>
+                <Button Grid.Column="1" Grid.Row="1" Content="40" Tag="40" Click="Button_SetTime_Click"></Button>
+                <Button Grid.Column="2" Grid.Row="1" Content="50" Tag="50" Click="Button_SetTime_Click"></Button>
+                <Button Grid.Column="3" Grid.Row="1" Content="60" Tag="60" Click="Button_SetTime_Click"></Button>
+                <Button x:Name="Btn_Stop" Grid.Column="4" Grid.Row="1" ToolTip="Cancel Shutdown"
                     Click="Button_Cancel_Click" Content="{StaticResource appbar_delete}">
-            </Button>
-        </Grid>
-        <Grid x:Name="Grid_TimeInfo" Background="White" Opacity="0.9" Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="1.5*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock x:Name="TBl_TimeDesc" Grid.Column="0" Grid.Row="1" Text="Shutdown Time" FontSize="36" FontWeight="SemiBold"></TextBlock>
-            <TextBlock x:Name="TBl_CountdownDesc" Grid.Column="1" Grid.Row="1" Text="Countdown" FontSize="36" FontWeight="SemiBold"></TextBlock>
-            <Viewbox Grid.Column="0" Grid.Row="0" MaxWidth="520"  Margin="20 0 20 0">
-                <TextBlock x:Name="TBl_Time" Text="{Binding Path=Time, StringFormat=HH:mm }"></TextBlock>
-            </Viewbox>
-            <Viewbox Grid.Column="3" Grid.Row="0" MaxWidth="800" Margin="20 0 20 0">
-                <TextBlock x:Name="TBl_Countdown" >
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
-                            <Binding Path="Countdown.Hours" />
-                            <Binding Path="Countdown.Minutes" />
-                            <Binding Path="Countdown.Seconds" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </Viewbox>
-        </Grid>
-    </DockPanel>
+                </Button>
+            </Grid>
+            <Grid x:Name="Grid_TimeInfo" Background="White" Opacity="0.9" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="TBl_TimeDesc" Grid.Column="0" Grid.Row="1" Text="Shutdown Time" FontSize="36" FontWeight="SemiBold"></TextBlock>
+                <TextBlock x:Name="TBl_CountdownDesc" Grid.Column="1" Grid.Row="1" Text="Countdown" FontSize="36" FontWeight="SemiBold"></TextBlock>
+                <Viewbox Grid.Column="0" Grid.Row="0" MaxWidth="520"  Margin="20 0 20 0">
+                    <TextBlock x:Name="TBl_Time" Text="{Binding Path=Time, StringFormat=HH:mm }"></TextBlock>
+                </Viewbox>
+                <Viewbox Grid.Column="3" Grid.Row="0" MaxWidth="800" Margin="20 0 20 0">
+                    <TextBlock x:Name="TBl_Countdown" >
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:00}:{1:00}:{2:00}">
+                                <Binding Path="Countdown.Hours" />
+                                <Binding Path="Countdown.Minutes" />
+                                <Binding Path="Countdown.Seconds" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Viewbox>
+            </Grid>
+        </DockPanel>
+    </Grid>
 </Controls:MetroWindow>
