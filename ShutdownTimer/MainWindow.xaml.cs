@@ -171,7 +171,8 @@ namespace ShutdownTimer
             if (Countdown.CompareTo(new TimeSpan(0, 0, 0)) != 0)
             {
                 Grid_Overlay.Visibility = Visibility.Visible;
-                var result = new ClosingDialog() { Owner = this }.ShowDialog();
+                var result = new ClosingDialog("If you close the program the scheduled shutdown will be canceled!",
+                    "Keep Open", "Close Programm") { Owner = this }.ShowDialog();
                 if (result == false)
                 {
                     e.Cancel = true;

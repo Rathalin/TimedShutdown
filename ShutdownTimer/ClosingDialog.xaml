@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShutdownTimer"
         mc:Ignorable="d" ResizeMode="NoResize"
-        Height="116" Width="326" WindowStartupLocation="CenterOwner" WindowStyle="None"
+        Height="160" Width="326" WindowStartupLocation="CenterOwner" WindowStyle="None"
         AllowsTransparency="True">
 
     <Window.Resources>
@@ -24,42 +24,56 @@
             </Border>
         </ControlTemplate>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Style x:Key="Btn_Standard" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
             <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
             <Setter Property="FontSize" Value="18"></Setter>
             <Setter Property="FontFamily" Value="Segoe UI Light"></Setter>
-            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="Background" Value="#FFDAD9D9"></Setter>
             <Setter Property="Opacity" Value="1"></Setter>
             <Setter Property="Template" Value="{StaticResource Template_Button}"></Setter>
             <Setter Property="Margin" Value="5 5 5 5"></Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#7FFFFFFF"/>
+                    <Setter Property="Background" Value="#7FDAD9D9"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="#FFFB8633"></Setter>
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Btn_Red" TargetType="Button" BasedOn="{StaticResource Btn_Standard}">
+            <Setter Property="Background" Value="#FFD8A4A4"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7FD8A4A4"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
     </Window.Resources>
-
-<Grid>
+   
+    <Grid>
         <Grid.Background>
-            <SolidColorBrush Color="#B2FB8633"></SolidColorBrush>
+            <LinearGradientBrush Opacity="0.1" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="Yellow" Offset="0.0" />
+                <GradientStop Color="Red" Offset="0.25" />
+                <GradientStop Color="Blue" Offset="0.75" />
+                <GradientStop Color="LimeGreen" Offset="1.0" />
+            </LinearGradientBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock x:Name="TBl_Text" Grid.ColumnSpan="2" FontFamily="Segoe UI Light" FontSize="22" TextWrapping="Wrap" DockPanel.Dock="Top"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Text}" Margin="10 0 5 0"></TextBlock>
-        <Button x:Name="Btn_No" Margin="10" Grid.Row="1" Click="ButtonNo_Click" Content="{Binding Path=CancelText}" ></Button>
-        <Button x:Name="Btn_Yes" Margin="10" Grid.Row="1" Grid.Column="1" Click="ButtonYes_Click" Content="{Binding Path=ConfirmText}"></Button>
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Text}" Margin="10 5 10 0"></TextBlock>
+        <Button x:Name="Btn_No" Margin="10" Grid.Row="1" Click="ButtonNo_Click" Content="{Binding Path=CancelText}" Style="{StaticResource Btn_Standard}"></Button>
+        <Button x:Name="Btn_Yes" Margin="10" Grid.Row="1" Grid.Column="1" Click="ButtonYes_Click" Content="{Binding Path=ConfirmText}" Style="{StaticResource Btn_Red}"></Button>
     </Grid>
 </Window>

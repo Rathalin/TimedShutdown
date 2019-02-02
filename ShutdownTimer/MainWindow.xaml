@@ -53,8 +53,7 @@
             </Grid.Background>
         </Grid>
         <DockPanel>
-            <DockPanel.Background>
-                
+            <DockPanel.Background>                
                 <LinearGradientBrush Opacity="0.1" StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="Yellow" Offset="0.0" />
                     <GradientStop Color="Red" Offset="0.25" />
