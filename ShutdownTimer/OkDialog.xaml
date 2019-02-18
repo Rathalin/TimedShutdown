@@ -1,0 +1,78 @@
+﻿<Controls:MetroWindow x:Class="ShutdownTimer.OkDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShutdownTimer"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Shutdown Timer" Height="160" Width="350"
+        BorderThickness="1" WindowStyle="SingleBorderWindow">
+    <Window.Resources>
+
+        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="100"></Setter>
+            <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <ControlTemplate x:Key="Template_Button" TargetType="{x:Type Button}">
+            <Border Name="border" BorderThickness="0" BorderBrush="Gray" Background="{TemplateBinding Background}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+        </ControlTemplate>
+
+        <Style x:Key="Btn_Standard" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="FontFamily" Value="Segoe UI Light"></Setter>
+            <Setter Property="Background" Value="#FFDAD9D9"></Setter>
+            <Setter Property="Opacity" Value="1"></Setter>
+            <Setter Property="Template" Value="{StaticResource Template_Button}"></Setter>
+            <Setter Property="Margin" Value="5 5 5 5"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7FDAD9D9"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Btn_Red" TargetType="Button" BasedOn="{StaticResource Btn_Standard}">
+            <Setter Property="Background" Value="#FFD8A4A4"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7FD8A4A4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush Opacity="0.1" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="Yellow" Offset="0.0" />
+                <GradientStop Color="Red" Offset="0.25" />
+                <GradientStop Color="Blue" Offset="0.75" />
+                <GradientStop Color="LimeGreen" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="TBl_Text" Grid.ColumnSpan="2" FontFamily="Segoe UI Light" FontSize="22" TextWrapping="Wrap" DockPanel.Dock="Top"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Text}" Margin="10 5 10 0"></TextBlock>
+        <Button x:Name="Btn_Confirm" Margin="10" Grid.Row="1" Click="ButtonConfirm_Click" Content="{Binding Path=CancelText}" Style="{StaticResource Btn_Standard}"
+                Grid.ColumnSpan="2" HorizontalAlignment="Center" MinWidth="120"></Button>
+    </Grid>
+</Controls:MetroWindow>

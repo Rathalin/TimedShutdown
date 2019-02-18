@@ -29,10 +29,16 @@ namespace ShutdownTimer
     {
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = this;           
-            Reset();
+            if (AppAlreadyRunning())
+            {
+                OkDialog dlg = new OkDialog("ShutdownTimer is already running!", "Ok");
+                dlg.ShowDialog();
+                Close();
+            }
 
+            InitializeComponent();
+            DataContext = this;
+            Reset();
             // Default mode is Minutes
             Radio_Minutes.IsChecked = true;
         }
@@ -63,6 +69,11 @@ namespace ShutdownTimer
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int shutdownTimer = 0;
+
+        private bool AppAlreadyRunning()
+        {
+            return System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1;
+        }
 
         private void Reset()
         {
@@ -172,7 +183,8 @@ namespace ShutdownTimer
             {
                 Grid_Overlay.Visibility = Visibility.Visible;
                 var result = new ClosingDialog("If you close the program the scheduled shutdown will be canceled!",
-                    "Keep Open", "Close Programm") { Owner = this }.ShowDialog();
+                    "Keep Open", "Close Programm")
+                { Owner = this }.ShowDialog();
                 if (result == false)
                 {
                     e.Cancel = true;
@@ -182,7 +194,7 @@ namespace ShutdownTimer
                     StopShutdown();
                 }
                 Grid_Overlay.Visibility = Visibility.Collapsed;
-            }            
+            }
         }
 
         private void Button_Debug_Click(object sender, RoutedEventArgs e)
